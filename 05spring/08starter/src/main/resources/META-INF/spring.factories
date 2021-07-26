@@ -1,0 +1,12 @@
+#-------starter自动装配---------
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+ com.alex.AutoConfiguration
+
+com.alex.students.id = 1;
+com.alex.students.name = aaa;
+
+com.alex.klass.id = 2;
+com.alex.klass.name = kkk;
+
+com.alex.school.id = 3;
+com.alex.school.name = sss;
