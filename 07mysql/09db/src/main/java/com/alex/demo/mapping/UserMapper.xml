@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alex.demo.mapping.UserMapper">
+    <resultMap id="UserDo" type="com.alex.demo.dto.UserDto">
+        <result column="id" property="id" />
+        <result column="userId" property="user_id" />
+        <result column="userCode" property="user_code" />
+        <result column="nickName" property="nick_name" />
+        <result column="avatar" property="avatar" />
+        <result column="intro" property="intro" />
+        <result column="gend" property="gend" />
+        <result column="birthday" property="birthday" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="operatorId" property="operator_id" />
+        <result column="createdAt" property="created_at" />
+        <result column="updatedAt" property="updated_at" />
+        <result column="state" property="state" />
+    </resultMap>
+
+    <select id="findUserByUserId" resultType="UserDo">
+        SELECT
+               `id`,
+               `user_id`,
+               `user_code`,
+               `nick_name`,
+               `avatar`,
+               `intro`,
+               `gend`,
+               `birthday`,
+               `province`,
+               `city`,
+               `operator_id`,
+               `created_at`,
+               `updated_at`,
+               `state`
+        FROM `user`
+        WHERE
+              user_id = #{user_id}
+    </select>
+
+    <update id="updateUser" parameterType="hashmap">
+        UPDATE `user`
+        <set>
+            <if test="userCode!=null">,`user_code` = #{userCode}</if>
+            <if test="nickName!=null">,`nick_name` = #{nickName}</if>
+            <if test="avatar!=null">,`avatar` = #{avatar}</if>
+            <if test="intro!=null">,`intro` = #{intro}</if>
+            <if test="gend!=null">,`gend` = #{gend}</if>
+            <if test="birthday!=null">,`birthday` = #{birthday}</if>
+            <if test="province!=null">,`province` = #{province}</if>
+            <if test="city!=null">,`city` = #{city}</if>
+            <if test="operatorId!=null">,`operator_id` = #{operatorId}</if>
+            <if test="createdAt!=null">,`created_at` = #{createdAt}</if>
+            <if test="updatedAt!=null">,`updated_at` = #{updatedAt}</if>
+            <if test="state!=null">,`state` = #{state}</if>
+        </set>
+        <where>
+            AND `user_id` = #{user_id}
+        </where>
+    </update>
+
+</mapper>
