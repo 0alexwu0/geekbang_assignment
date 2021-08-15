@@ -1,52 +1,46 @@
 server:
   port: 8080
+mybatis:
+  mapper-locations: com/alex/demo/mapping/*.xml
+  type-aliases-package: com.alex.demo.dto
 spring:
   shardingsphere:
+    props:
+      sql.show: true
+      check:
+      table:
+        metadata:
+        enabled: false
+
     datasource:
       names: ds0,ds1
       ds_0:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/gk_order_0?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/gk_order_0?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
         username: root
         password: 123456
       ds_1:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/gk_order_1?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/gk_order_1?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
         username: root
         password: 123456
     sharding:
-      tables:
-        order:
-          actualDataNodes: ds${0..1}.order_${0..15}
+      defaultDatabaseStrategy:
+        inline:
+          shardingColumn: user_id
+          algorithmExpression : ds${user_id % 2}
+    tables:
+        t_order:
+          actualDataNodes: ds$->{0..1}.t_order_$->{0..15}
           tableStrategy:
-            standard:
+            inline:
               shardingColumn: id
-              shardingAlgorithmName: order_inline
-          keyGenerateStrategy:
+              algorithmExpression: t_order_$->{id % 16}
+          keyGenerator:
             column: id
-            keyGeneratorName: snowflake
-        defaultDatabaseStrategy:
-          standard:
-            shardingColumn: user_id
-            shardingAlgorithmName: database_inline
-
-        shardingAlgorithms:
-          database_inline:
-            type: INLINE
-            props:
-              algorithm-expression: ds${user_id % 2}
-          order_inline:
-            type: INLINE
-            props:
-              algorithm-expression: order_${id % 16}
-
-        keyGenerators:
-          snowflake:
             type: SNOWFLAKE
             props:
-              worker-id: 123
-      props:
-        sql:
-          show: true
+              worker:
+                id:33

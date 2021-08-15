@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.alex.demo.mapping.OrderMapper">
-    <resultMap id="OrderDo" type="com.alex.demo.dto.OrderDto">
+    <resultMap id="OrderDto" type="com.alex.demo.dto.OrderDto">
         <result column="id" property="id" />
         <result column="orderSn" property="order_sn" />
         <result column="userId" property="user_id" />
@@ -12,7 +12,7 @@
         <result column="state" property="state" />
     </resultMap>
 
-    <select id="queryOrderByUserId" resultType="OrderDo">
+    <select id="queryOrderByUserId" resultType="OrderDto">
         SELECT
                `id`,
                `order_sn`,
@@ -22,13 +22,13 @@
                `created_at`,
                `updated_at`,
                `state`
-        FROM `user`
+        FROM t_order
         WHERE
               user_id = #{user_id}
     </select>
 
     <insert id="insertOrder" parameterType="com.alex.demo.dto.OrderDto">
-        INSERT INTO `user` (order_sn,user_id,amount,remark,created_at,updated_at,state)
+        INSERT INTO t_order (order_sn,user_id,amount,remark,created_at,updated_at,state)
         VALUES(
            #{orderSn}
            , #{userId}
@@ -41,7 +41,7 @@
     </insert>
 
     <insert id="insertOrderBatch" parameterType="com.alex.demo.dto.OrderDto">
-        INSERT INTO `user` (order_sn,user_id,amount,remark,created_at,updated_at,state)
+        INSERT INTO t_order (order_sn,user_id,amount,remark,created_at,updated_at,state)
         VALUES
         <foreach collection="list" item="item" separator=",">
             #{item.orderSn}

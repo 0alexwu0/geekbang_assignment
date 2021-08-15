@@ -1,12 +1,13 @@
 package com.alex.demo.mapping;
 
 import com.alex.demo.dto.OrderDto;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Mapper
 public interface OrderMapper {
 
     List<OrderDto> queryOrderByUserId(@Param("user_id") String userId);
