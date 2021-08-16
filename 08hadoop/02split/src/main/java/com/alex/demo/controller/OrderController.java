@@ -24,15 +24,19 @@ public class OrderController {
     @ResponseBody
     public String save() {
         Random rand = new Random();
-        OrderVo vo = new OrderVo();
-        vo.setUserId("1");
-        vo.setOrderSn(rand.nextInt(100)+"");
-        vo.setAmount(rand.nextInt(100)+"");
-        vo.setRemark(rand.nextInt(100)+"");
-        vo.setCreatedAt(new Date());
-        vo.setUpdatedAt(new Date());
 
-        orderService.insertOrder(vo);
+        for(int i=0;i<1000;i++){
+            OrderVo vo = new OrderVo();
+            vo.setUserId(rand.nextInt(100));
+            vo.setOrderSn(rand.nextInt(100)+"");
+            vo.setAmount(rand.nextInt(100)+"");
+            vo.setRemark(rand.nextInt(100)+"");
+            vo.setCreatedAt(new Date());
+            vo.setUpdatedAt(new Date());
+
+            orderService.insertOrder(vo);
+        }
+
         return "OK";
     }
 

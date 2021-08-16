@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-    List<OrderDto> queryOrderByUserId(@Param("user_id") String userId);
+    List<OrderDto> queryOrderByUserId(@Param("user_id") int userId);
 
     int insertOrder(OrderDto orderDto);
 

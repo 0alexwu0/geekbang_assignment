@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    List<OrderDto> queryOrderByUserId(String userId);
+    List<OrderDto> queryOrderByUserId(int userId);
 
     int insertOrder(OrderVo vo);
 

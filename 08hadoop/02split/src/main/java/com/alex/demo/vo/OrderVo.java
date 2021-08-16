@@ -7,11 +7,11 @@ public class OrderVo implements Serializable {
 
     private static final long serialVersionUID = -1;
 
-    private int id;
+    private Long id;
 
     private String orderSn;
 
-    private String userId;
+    private int userId;
 
     private String amount;
 
@@ -21,11 +21,11 @@ public class OrderVo implements Serializable {
 
     private Date updatedAt;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -37,11 +37,11 @@ public class OrderVo implements Serializable {
         this.orderSn = orderSn;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

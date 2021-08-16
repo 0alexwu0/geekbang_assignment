@@ -14,13 +14,13 @@ spring:
 
     datasource:
       names: ds0,ds1
-      ds_0:
+      ds0:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
         jdbc-url: jdbc:mysql://localhost:3306/gk_order_0?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
         username: root
         password: 123456
-      ds_1:
+      ds1:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
         jdbc-url: jdbc:mysql://localhost:3306/gk_order_1?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
@@ -30,17 +30,23 @@ spring:
       defaultDatabaseStrategy:
         inline:
           shardingColumn: user_id
-          algorithmExpression : ds${user_id % 2}
-    tables:
-        t_order:
-          actualDataNodes: ds$->{0..1}.t_order_$->{0..15}
-          tableStrategy:
-            inline:
-              shardingColumn: id
-              algorithmExpression: t_order_$->{id % 16}
-          keyGenerator:
-            column: id
-            type: SNOWFLAKE
-            props:
-              worker:
-                id:33
+          algorithmExpression : ds$->{user_id % 2}
+      defaultKeyGenerator:
+        type: SNOWFLAKE
+        column: id
+        props:
+          worker:
+            id:123
+      tables:
+          t_order:
+            actualDataNodes: ds$->{0..1}.t_order_$->{0..15}
+            tableStrategy:
+              inline:
+                shardingColumn: id
+                algorithmExpression: t_order_$->{new Random().nextInt(16)}
+            keyGenerator:
+              column: id
+              type: SNOWFLAKE
+              props:
+                worker:
+                  id:123

@@ -19,8 +19,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
 
     @Override
-    public List<OrderDto> queryOrderByUserId(String userId){
-        if(StringUtils.isBlank(userId)){
+    public List<OrderDto> queryOrderByUserId(int userId){
+        if(userId == 0){
             return new ArrayList<>();
         }
 

@@ -17,7 +17,7 @@ public class BeanConvertUtils extends BeanUtils {
 
         try {
             dist = distClass.newInstance();
-            BeanUtils.copyProperties(dist, src);
+            BeanUtils.copyProperties(src, dist);
         } catch (IllegalAccessException | InstantiationException var4) {
             return null;
         }

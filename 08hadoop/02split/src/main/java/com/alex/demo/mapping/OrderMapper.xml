@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.alex.demo.mapping.OrderMapper">
-    <resultMap id="OrderDto" type="com.alex.demo.dto.OrderDto">
+    <resultMap type="com.alex.demo.dto.OrderDto" id="OrderDto">
         <result column="id" property="id" />
-        <result column="orderSn" property="order_sn" />
-        <result column="userId" property="user_id" />
+        <result column="order_sn" property="orderSn" />
+        <result column="user_id" property="userId" />
         <result column="amount" property="amount" />
         <result column="remark" property="remark" />
-        <result column="createdAt" property="created_at" />
-        <result column="updatedAt" property="updated_at" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
         <result column="state" property="state" />
     </resultMap>
 
-    <select id="queryOrderByUserId" resultType="OrderDto">
+    <select id="queryOrderByUserId" resultType="OrderDto" parameterType="hashmap">
         SELECT
-               `id`,
-               `order_sn`,
-               `user_id`,
-               `amount`,
-               `remark`,
-               `created_at`,
-               `updated_at`,
-               `state`
+               id,
+               order_sn,
+               user_id,
+               amount,
+               remark,
+               created_at,
+               updated_at,
+               state
         FROM t_order
         WHERE
               user_id = #{user_id}
     </select>
 
-    <insert id="insertOrder" parameterType="com.alex.demo.dto.OrderDto">
+    <insert id="insertOrder" parameterType="com.alex.demo.dto.OrderDto" keyColumn="id" keyProperty="id">
         INSERT INTO t_order (order_sn,user_id,amount,remark,created_at,updated_at,state)
         VALUES(
            #{orderSn}
