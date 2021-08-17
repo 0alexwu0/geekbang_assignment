@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.alex.demo.mapping.OrderMapper">
-    <resultMap type="com.alex.demo.dto.OrderDto" id="OrderDto">
+    <resultMap type="com.alex.demo.dto.OrderDto" id="OrderDO">
         <result column="id" property="id" />
         <result column="order_sn" property="orderSn" />
         <result column="user_id" property="userId" />
@@ -12,7 +12,7 @@
         <result column="state" property="state" />
     </resultMap>
 
-    <select id="queryOrderByUserId" resultType="OrderDto" parameterType="hashmap">
+    <select id="queryOrderByUserId" resultMap="OrderDO" parameterType="hashmap">
         SELECT
                id,
                order_sn,
