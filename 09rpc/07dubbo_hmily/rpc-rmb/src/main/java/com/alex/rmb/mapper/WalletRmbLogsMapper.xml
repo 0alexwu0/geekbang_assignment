@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alex.rmb.mapper.WalletRmbLogsMapper">
+    <resultMap type="com.alex.core.dto.WalletRmbDto" id="WalletRmbDo">
+        <result column="user_id" property="userId" />
+        <result column="money" property="money" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <select id="findWalletByUserId" resultMap="WalletRmbDo" parameterType="hashmap">
+        SELECT
+            user_id,
+            money,
+            updated_at,
+            state
+        FROM wallet_rmb
+        WHERE
+            user_id = #{user_id}
+    </select>
+
+    <update id="updateWallet" parameterType="hashmap">
+        UPDATE wallet_rmb
+        <set>
+            <if test="money!=null">,money = #{money}</if>
+            <if test="updatedAt!=null">,updated_at = #{updatedAt}</if>
+        </set>
+        <where>
+            user_id = #{user_id}
+        </where>
+    </update>
+</mapper>
