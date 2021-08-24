@@ -9,8 +9,6 @@ import com.alex.dollar.mapper.WalletDollarMapper;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.dromara.hmily.annotation.HmilyTCC;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -24,14 +22,7 @@ public class DollarServiceImpl implements DollarService {
     @Autowired
     private WalletDollarLogsMapper walletDollarLogsMapper;
 
-    @Transactional
-    public void commit(DollarVo vo){
-        System.out.println("OK:"+vo.getMoney());
-    }
-
     @Override
-    @Transactional
-    @HmilyTCC(confirmMethod="commit",cancelMethod="addMoney")
     public WalletDollarDto subMoney(DollarVo vo){
         if(vo == null){
             return null;
@@ -52,8 +43,6 @@ public class DollarServiceImpl implements DollarService {
     }
 
     @Override
-    @Transactional
-    @HmilyTCC(confirmMethod="commit",cancelMethod="subMoney")
     public WalletDollarDto addMoney(DollarVo vo){
         if(vo == null){
             return null;

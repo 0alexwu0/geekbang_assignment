@@ -24,14 +24,7 @@ public class RmbServiceImpl implements RmbService {
     @Autowired
     private WalletRmbLogsMapper walletRmbLogsMapper;
 
-    @Transactional
-    public void commit(DollarVo vo){
-        System.out.println("OK:"+vo.getMoney());
-    }
-
     @Override
-    @Transactional
-    @HmilyTCC(confirmMethod="commit",cancelMethod="addMoney")
     public WalletRmbDto subMoney(RmbVo vo) {
         if(vo == null){
             return null;
