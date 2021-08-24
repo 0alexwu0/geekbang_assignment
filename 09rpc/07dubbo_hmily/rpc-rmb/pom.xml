@@ -73,7 +73,6 @@
             <artifactId>HikariCP</artifactId>
             <version>3.4.5</version>
         </dependency>
-        <!--
         <dependency>
             <groupId>org.dromara</groupId>
             <artifactId>hmily-springcloud</artifactId>
@@ -84,7 +83,6 @@
             <artifactId>hmily-spring-boot-starter-springcloud</artifactId>
             <version>2.1.1</version>
         </dependency>
-        -->
     </dependencies>
 
     <build>
