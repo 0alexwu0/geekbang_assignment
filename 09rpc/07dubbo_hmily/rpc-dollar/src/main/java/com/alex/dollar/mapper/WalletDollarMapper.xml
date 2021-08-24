@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.alex.dollar.mapper.WalletDollarLogsMapper">
-    <resultMap type="com.alex.core.dto.WalletDollarLogsDto" id="WalletDollarLogsDo">
-        <result column="id" property="id" />
+<mapper namespace="com.alex.dollar.mapper.WalletDollarMapper">
+    <resultMap type="com.alex.core.dto.WalletDollarDto" id="WalletDollarDo">
         <result column="user_id" property="userId" />
         <result column="money" property="money" />
-        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
     </resultMap>
 
-    <insert id="insertLog" parameterType="com.alex.core.dto.WalletDollarLogsDto" keyColumn="id" keyProperty="id">
-        INSERT INTO wallet_dollar (user_id,money,created_at)
-        VALUES(
-            #{userId}
-           , #{money}
-           , #{createdAt}
-        )
-    </insert>
+    <select id="findWalletByUserId" resultMap="WalletDollarDo" parameterType="hashmap">
+        SELECT
+            user_id,
+            money,
+            updated_at
+        FROM wallet_dollar
+        WHERE
+            user_id = #{userId}
+    </select>
+
+    <update id="updateWallet" parameterType="hashmap">
+        UPDATE wallet_dollar
+        <set>
+            <if test="money!=null">,money = #{money}</if>
+            <if test="updatedAt!=null">,updated_at = #{updatedAt}</if>
+        </set>
+        <where>
+            user_id = #{userId}
+        </where>
+    </update>
 </mapper>

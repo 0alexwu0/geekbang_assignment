@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface WalletDollarMapper {
 
-    WalletDollarDto findWalletByUserId(@Param("user_id") int userId);
+    WalletDollarDto findWalletByUserId(@Param("userId") int userId);
 
     int updateWallet(WalletDollarDto dto);
 }

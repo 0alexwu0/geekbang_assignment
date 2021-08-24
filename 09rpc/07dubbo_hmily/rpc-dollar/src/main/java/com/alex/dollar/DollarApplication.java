@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DollarApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DollarApplication.class);
-		
+		SpringApplication.run(DollarApplication.class,args);
 	}
 }
