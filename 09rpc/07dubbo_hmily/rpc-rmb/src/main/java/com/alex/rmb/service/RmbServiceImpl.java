@@ -45,8 +45,6 @@ public class RmbServiceImpl implements RmbService {
     }
 
     @Override
-    @Transactional
-    @HmilyTCC(confirmMethod="commit",cancelMethod="subMoney")
     public WalletRmbDto addMoney(RmbVo vo) {
         if(vo == null){
             return null;
