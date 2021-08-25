@@ -69,11 +69,3 @@ repository:
     timeBetweenEvictionRunsMillis: -1
     blockWhenExhausted: true
     timeOut: 1000
-
-metrics:
-  metricsName: prometheus
-  host:
-  port: 9091
-  async: true
-  threadCount : 16
-  jmxConfig:

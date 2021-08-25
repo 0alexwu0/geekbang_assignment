@@ -24,7 +24,3 @@ dubbo:
     address: zookeeper://localhost:2181
   metadata-report:
     address: zookeeper://localhost:2181
-hmily:
-  ribbon:
-    rule:
-      enabled: true
