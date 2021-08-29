@@ -24,7 +24,7 @@ public final class Rpcfx {
         ParserConfig.getGlobalInstance().addAccept("io.kimmking");
     }
 
-    public static <T, filters> T createFromRegistry(final Class<T> serviceClass, final String zkUrl, Router router, LoadBalancer loadBalance, Filter filter) {
+    public static <T, filters> T createFromRegistry(final Class<T> serviceClass, final String zkUrl, Router router, LoadBalancer loadBalance,final String version,final String group, Filter filter) {
 
         // 加filte之一
 
@@ -37,13 +37,13 @@ public final class Rpcfx {
 
         String url = loadBalance.select(urls); // router, loadbalance
 
-        return (T) create(serviceClass, url, filter);
+        return (T) create(serviceClass, url,version,group, filter);
 
     }
 
-    public static <T> T create(final Class<T> serviceClass, final String url, Filter... filters) {
+    public static <T> T create(final Class<T> serviceClass, final String url,final String version,final String group, Filter... filters) {
         // 0. 替换动态代理 -> 字节码生成
-        TestProxyFactory proxyFactory = new TestProxyFactory(Rpcfx.class, new RpcfxInvocationHandler(serviceClass, url, filters));
+        TestProxyFactory proxyFactory = new TestProxyFactory(Rpcfx.class, new RpcfxInvocationHandler(serviceClass, url,version,group, filters));
         return (T) proxyFactory.createProxyObject(serviceClass);
         //return (T) Proxy.newProxyInstance(Rpcfx.class.getClassLoader(), new Class[]{serviceClass}, new RpcfxInvocationHandler(serviceClass, url, filters));
     }
@@ -55,11 +55,15 @@ public final class Rpcfx {
         private final Class<?> serviceClass;
         private final String url;
         private final Filter[] filters;
+        private final String version;
+        private final String group;
 
-        public <T> RpcfxInvocationHandler(Class<T> serviceClass, String url, Filter... filters) {
+        public <T> RpcfxInvocationHandler(Class<T> serviceClass, String url,final String version,final String group, Filter... filters) {
             this.serviceClass = serviceClass;
             this.url = url;
             this.filters = filters;
+            this.version = version;
+            this.group = group;
         }
 
         // 可以尝试，自己去写对象序列化，二进制还是文本的，，，rpcfx是xml自定义序列化、反序列化，json: code.google.com/p/rpcfx
@@ -76,6 +80,8 @@ public final class Rpcfx {
             request.setServiceClass(this.serviceClass.getName());
             request.setMethod(method.getName());
             request.setParams(params);
+            request.setVersion(this.version);
+            request.setGroup(this.group);
 
             if (null!=filters) {
                 for (Filter filter : filters) {
