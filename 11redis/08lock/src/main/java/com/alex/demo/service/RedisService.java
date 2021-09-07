@@ -1,10 +1,14 @@
 package com.alex.demo.service;
 
+import redis.clients.jedis.Jedis;
+
 public interface RedisService {
 
-    boolean lock(String lockName);
+    Jedis getRedisClient();
 
-    boolean unlock(String lockName);
+    boolean addStock(int stock);
 
-    boolean checkLock();
+    boolean useStock(int stock);
+
+    String getStock();
 }

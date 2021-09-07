@@ -3,6 +3,7 @@ package com.alex.demo.controller;
 import com.alex.demo.dto.OrderDto;
 import com.alex.demo.service.OrderService;
 import com.alex.demo.service.RedisService;
+import com.alex.demo.service.RedissionService;
 import com.alex.demo.vo.OrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,9 @@ public class OrderController {
     private OrderService orderService;
 
     @Autowired
+    private RedissionService redissionService;
+
+    @Autowired
     private RedisService redisService;
 
     @RequestMapping(value = "/save",method = RequestMethod.GET)
@@ -28,7 +32,7 @@ public class OrderController {
         Random rand = new Random();
         List<OrderVo> list = new ArrayList<>();
 
-        if(!redisService.lock("m_save")){
+        if(!redissionService.lock("m_save")){
             return "lock error";
         }
 
@@ -49,7 +53,7 @@ public class OrderController {
             return "rollback";
         }
 
-        redisService.unlock("m_save");
+        redissionService.unlock("m_save");
 
         return "OK";
     }
@@ -63,7 +67,7 @@ public class OrderController {
     @RequestMapping("/lock")
     @ResponseBody
     public String lock(@RequestParam("lock") String name) {
-        if(!redisService.lock(name)){
+        if(!redissionService.lock(name)){
             return "lock error";
         }
 
@@ -73,10 +77,27 @@ public class OrderController {
     @RequestMapping("/unlock")
     @ResponseBody
     public String unlock(@RequestParam("lock") String name) {
-        if(!redisService.unlock(name)){
+        if(!redissionService.unlock(name)){
             return "unlock error";
         }
 
         return "unlock OK";
+    }
+
+    @RequestMapping("/addStock")
+    @ResponseBody
+    public String addStock(@RequestParam("stock") int stock){
+        redisService.addStock(stock);
+        return redisService.getStock();
+    }
+
+    @RequestMapping("/useStock")
+    @ResponseBody
+    public String userStock(@RequestParam("stock") int stock){
+        if(redisService.useStock(stock)){
+            return redisService.getStock();
+        }else{
+            return "error";
+        }
     }
 }

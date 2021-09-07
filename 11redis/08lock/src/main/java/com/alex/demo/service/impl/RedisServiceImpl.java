@@ -1,19 +1,12 @@
 package com.alex.demo.service.impl;
 
 import com.alex.demo.service.RedisService;
-import org.redisson.Redisson;
-import org.redisson.RedissonMap;
-import org.redisson.api.RLock;
-import org.redisson.api.RMap;
-import org.redisson.api.RedissonClient;
-import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 @Service
 public class RedisServiceImpl implements RedisService {
-
-    private RedissonClient client;
 
     @Value("${spring.redis.host}")
     private String host;
@@ -21,50 +14,32 @@ public class RedisServiceImpl implements RedisService {
     @Value("${spring.redis.port}")
     private String port;
 
-    private RMap<String, String> rmap;
-
-    public RedisServiceImpl(){
-        Config config = new Config();
-        config.useSingleServer().setAddress("redis://"+host+":"+port);
-
-        client = Redisson.create(config);
-
-        rmap = client.getMap("demo");
+    @Override
+    public Jedis getRedisClient() {
+        Jedis jedis = new Jedis(host, Integer.parseInt(port));
+        return jedis;
     }
 
     @Override
-    public boolean lock(String lockName) {
-        if(checkLock()){
-            if(rmap.get("lock").equals(lockName)){
-                return true;
-            }else{
-                return false;
-            }
-        }
-
-        rmap.put("lock",lockName);
-
+    public boolean addStock(int stock) {
+        Jedis jedis = getRedisClient();
+        jedis.incrBy("stock",stock);
         return true;
     }
 
     @Override
-    public boolean unlock(String lockName) {
-        if(!checkLock()) {
-            return false;
+    public boolean useStock(int stock) {
+        Jedis jedis = getRedisClient();
+        if(Integer.parseInt(jedis.get("stock")) > stock){
+            jedis.decrBy("stock",stock);
+            return true;
         }
-        if(!rmap.get("lock").equals(lockName)){
-            return false;
-        }
-        rmap.remove("lock");
-
-        return true;
+        return false;
     }
 
     @Override
-    public boolean checkLock() {
-        if(!rmap.containsKey("lock")){
-            return false;
-        }
-        return true;
+    public String getStock() {
+        Jedis jedis = getRedisClient();
+        return jedis.get("stock");
     }
 }
