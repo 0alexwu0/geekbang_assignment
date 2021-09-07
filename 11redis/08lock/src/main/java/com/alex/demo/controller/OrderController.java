@@ -100,4 +100,20 @@ public class OrderController {
             return "error";
         }
     }
+
+    @RequestMapping("/publish")
+    @ResponseBody
+    public String publish(){
+        Random rand = new Random();
+        OrderVo vo = new OrderVo();
+        vo.setUserId(rand.nextInt(100));
+        vo.setOrderSn(rand.nextInt(100)+"");
+        vo.setAmount(rand.nextInt(100)+"");
+        vo.setRemark(rand.nextInt(100)+"");
+        vo.setCreatedAt(new Date());
+        vo.setUpdatedAt(new Date());
+
+        redisService.publishOrder(vo);
+        return "publish OK";
+    }
 }
