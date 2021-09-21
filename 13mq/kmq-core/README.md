@@ -1,0 +1,8 @@
+## 说明
+
+第二 第三版本功能合并在本项目中
+通过ArrayList替代原先的内存Queue
+定义了对象KmqQueueItem放入数组中，每次消费一个Queue就更新isRead
+同时支持了从指定位置读以及读取指定长度，详见Kmq.java中的poll方法
+同时解决了中间读后取到已读部分的问题
+最后定义了IndexController作为http接口
